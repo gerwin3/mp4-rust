@@ -1,4 +1,3 @@
-use bytes::BytesMut;
 use std::cmp;
 use std::convert::TryFrom;
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -619,7 +618,7 @@ impl Mp4Track {
             duration,
             rendering_offset,
             is_sync,
-            bytes: Bytes::from(buffer),
+            bytes: buffer,
         }))
     }
 }
@@ -634,7 +633,7 @@ pub(crate) struct Mp4TrackWriter {
     is_fixed_sample_size: bool,
     chunk_samples: u32,
     chunk_duration: u32,
-    chunk_buffer: BytesMut,
+    chunk_buffer: Vec<u8>,
 
     samples_per_chunk: u32,
     duration_per_chunk: u32,
@@ -689,7 +688,7 @@ impl Mp4TrackWriter {
         }
         Ok(Mp4TrackWriter {
             trak,
-            chunk_buffer: BytesMut::new(),
+            chunk_buffer: Vec::new(),
             sample_id: 1,
             duration_per_chunk: config.timescale, // 1 second
             ..Self::default()
