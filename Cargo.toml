@@ -1,6 +1,6 @@
 [package]
 name = "mp4"
-version = "0.14.0"
+version = "0.15.0"
 authors = [
     "Alf <alf.g.jr@gmail.com>",
     "Gerwin van der Lugt <account+github@gerwin3.com>",
@@ -19,7 +19,7 @@ include = ["src", "benches", "Cargo.toml", "README", "LICENSE"]
 byteorder = "1"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.6"
 
 [[bench]]
 name = "bench_main"
