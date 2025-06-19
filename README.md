@@ -1,17 +1,13 @@
 # mp4
-> MP4 Reader and Writer in Rust 🦀
 
 `mp4` is a Rust library to read and write ISO-MP4 files. This package contains MPEG-4 specifications defined in parts:
 * [ISO/IEC 14496-12](https://en.wikipedia.org/wiki/ISO/IEC_base_media_file_format) - ISO Base Media File Format (QuickTime, MPEG-4, etc)
 * [ISO/IEC 14496-14](https://en.wikipedia.org/wiki/MPEG-4_Part_14) - MP4 file format
 * ISO/IEC 14496-17 - Streaming text format
 
-https://crates.io/crates/mp4
-
-[![Crates.io](https://img.shields.io/crates/v/mp4)](https://crates.io/crates/mp4)
-[![Crates.io](https://img.shields.io/crates/d/mp4)](https://crates.io/crates/mp4)
-[![Docs](https://img.shields.io/badge/docs-online-5023dd.svg?style=flat-square)](https://docs.rs/mp4)
-[![Rust](https://github.com/alfg/mp4-rust/workflows/Rust/badge.svg)](https://github.com/alfg/mp4-rust/actions)
+This is a forked version of the original [`mp4`](https://github.com/alfg/mp4-rust).
+It is a slimmer version of the original that removes most of the dependencies
+compared to the original.
 
 #### Example
 ```rust
@@ -135,9 +131,6 @@ cargo docs
 ```
 
 View at `target/doc/mp4/index.html`
-
-## Web Assembly
-See the [mp4-inspector](https://github.com/alfg/mp4-inspector) project as a reference for using this library in Javascript via Web Assembly.
 
 ## Related Projects
 * https://github.com/mozilla/mp4parse-rust

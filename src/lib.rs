@@ -60,10 +60,6 @@
 //! [dependencies]
 //! mp4 = "0.7.0"
 //! ```
-//!
-//! [mp4box]: https://github.com/alfg/mp4-rust/blob/master/src/mp4box/mod.rs
-//! [examples]: https://github.com/alfg/mp4-rust/tree/master/examples
-#![doc(html_root_url = "https://docs.rs/mp4/*")]
 
 use std::fs::File;
 use std::io::BufReader;
