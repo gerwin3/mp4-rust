@@ -98,8 +98,8 @@ impl<R: Read + Seek> Mp4Reader<R> {
         // Update tracks if any fragmented (moof) boxes are found.
         if !moofs.is_empty() {
             let mut default_sample_duration = 0;
-            if let Some(ref moov) = moov {
-                if let Some(ref mvex) = &moov.mvex {
+            if let Some(moov) = &moov {
+                if let Some(mvex) = &moov.mvex {
                     default_sample_duration = mvex.trex.default_sample_duration
                 }
             }
@@ -187,7 +187,7 @@ impl<R: Read + Seek> Mp4Reader<R> {
             .collect();
 
         let mut default_sample_duration = 0;
-        if let Some(ref mvex) = &self.moov.mvex {
+        if let Some(mvex) = &self.moov.mvex {
             default_sample_duration = mvex.trex.default_sample_duration
         }
 

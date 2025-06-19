@@ -1,25 +1,19 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 use std::mem::size_of;
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct TrunBox {
     pub version: u8,
     pub flags: u32,
     pub sample_count: u32,
     pub data_offset: Option<i32>,
     pub first_sample_flags: Option<u32>,
-
-    #[serde(skip_serializing)]
     pub sample_durations: Vec<u32>,
-    #[serde(skip_serializing)]
     pub sample_sizes: Vec<u32>,
-    #[serde(skip_serializing)]
     pub sample_flags: Vec<u32>,
-    #[serde(skip_serializing)]
     pub sample_cts: Vec<u32>,
 }
 
@@ -66,10 +60,6 @@ impl Mp4Box for TrunBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

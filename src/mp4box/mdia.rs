@@ -1,10 +1,9 @@
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
 use crate::mp4box::{hdlr::HdlrBox, mdhd::MdhdBox, minf::MinfBox};
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct MdiaBox {
     pub mdhd: MdhdBox,
     pub hdlr: HdlrBox,
@@ -28,10 +27,6 @@ impl Mp4Box for MdiaBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

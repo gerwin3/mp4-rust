@@ -2,11 +2,10 @@ use std::ffi::CStr;
 use std::io::{Read, Seek, Write};
 
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct EmsgBox {
     pub version: u8,
     pub flags: u32,
@@ -46,10 +45,6 @@ impl Mp4Box for EmsgBox {
     fn box_size(&self) -> u64 {
         Self::size_without_message(self.version, &self.scheme_id_uri, &self.value)
             + self.message_data.len() as u64
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

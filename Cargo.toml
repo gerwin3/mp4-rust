@@ -17,7 +17,6 @@ include = ["src", "benches", "Cargo.toml", "README", "LICENSE"]
 
 [dependencies]
 byteorder = "1"
-num-rational = { version = "0.4.0", features = ["serde"] }
 
 [dev-dependencies]
 criterion = "0.3"

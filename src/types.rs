@@ -5,68 +5,105 @@ use std::fmt;
 use crate::mp4box::*;
 use crate::*;
 
-pub use num_rational::Ratio;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct FixedPointU8(Ratio<u16>);
+pub struct FixedPointU8 {
+    numerator: u16,
+    denominator: u16,
+}
 
 impl FixedPointU8 {
+    #[inline]
     pub fn new(val: u8) -> Self {
-        Self(Ratio::new_raw(val as u16 * 0x100, 0x100))
+        Self {
+            numerator: val as u16 * 0x100,
+            denominator: 0x100,
+        }
     }
 
+    #[inline]
     pub fn new_raw(val: u16) -> Self {
-        Self(Ratio::new_raw(val, 0x100))
+        Self {
+            numerator: val,
+            denominator: 0x100,
+        }
     }
 
+    #[inline]
     pub fn value(&self) -> u8 {
-        self.0.to_integer() as u8
+        (self.numerator / self.denominator) as u8
     }
 
+    #[inline]
     pub fn raw_value(&self) -> u16 {
-        *self.0.numer()
+        self.numerator
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct FixedPointI8(Ratio<i16>);
+pub struct FixedPointI8 {
+    numerator: i16,
+    denominator: i16,
+}
 
 impl FixedPointI8 {
+    #[inline]
     pub fn new(val: i8) -> Self {
-        Self(Ratio::new_raw(val as i16 * 0x100, 0x100))
+        Self {
+            numerator: val as i16 * 0x100,
+            denominator: 0x100,
+        }
     }
 
+    #[inline]
     pub fn new_raw(val: i16) -> Self {
-        Self(Ratio::new_raw(val, 0x100))
+        Self {
+            numerator: val,
+            denominator: 0x100,
+        }
     }
 
+    #[inline]
     pub fn value(&self) -> i8 {
-        self.0.to_integer() as i8
+        (self.numerator / self.denominator) as i8
     }
 
+    #[inline]
     pub fn raw_value(&self) -> i16 {
-        *self.0.numer()
+        self.numerator
     }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct FixedPointU16(Ratio<u32>);
+pub struct FixedPointU16 {
+    numerator: u32,
+    denominator: u32,
+}
 
 impl FixedPointU16 {
+    #[inline]
     pub fn new(val: u16) -> Self {
-        Self(Ratio::new_raw(val as u32 * 0x10000, 0x10000))
+        Self {
+            numerator: val as u32 * 0x10000,
+            denominator: 0x10000,
+        }
     }
 
+    #[inline]
     pub fn new_raw(val: u32) -> Self {
-        Self(Ratio::new_raw(val, 0x10000))
+        Self {
+            numerator: val,
+            denominator: 0x10000,
+        }
     }
 
+    #[inline]
     pub fn value(&self) -> u16 {
-        self.0.to_integer() as u16
+        (self.numerator / self.denominator) as u16
     }
 
+    #[inline]
     pub fn raw_value(&self) -> u32 {
-        *self.0.numer()
+        self.numerator
     }
 }
 

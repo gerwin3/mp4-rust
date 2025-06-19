@@ -1,16 +1,13 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Mp4aBox {
     pub data_reference_index: u16,
     pub channelcount: u16,
     pub samplesize: u16,
-
-    #[serde(with = "value_u32")]
     pub samplerate: FixedPointU16,
     pub esds: Option<EsdsBox>,
 }
@@ -58,10 +55,6 @@ impl Mp4Box for Mp4aBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {
@@ -158,7 +151,7 @@ impl<W: Write> WriteBox<&mut W> for Mp4aBox {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct EsdsBox {
     pub version: u8,
     pub flags: u32,
@@ -186,10 +179,6 @@ impl Mp4Box for EsdsBox {
             + 1
             + size_of_length(ESDescriptor::desc_size()) as u64
             + ESDescriptor::desc_size() as u64
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {
@@ -285,7 +274,7 @@ fn size_of_length(size: u32) -> u32 {
 fn write_desc<W: Write>(writer: &mut W, tag: u8, size: u32) -> Result<u64> {
     writer.write_u8(tag)?;
 
-    if size as u64 > std::u32::MAX as u64 {
+    if size as u64 > u32::MAX as u64 {
         return Err(Error::InvalidData("invalid descriptor length range"));
     }
 
@@ -302,7 +291,7 @@ fn write_desc<W: Write>(writer: &mut W, tag: u8, size: u32) -> Result<u64> {
     Ok(1 + nbytes as u64)
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct ESDescriptor {
     pub es_id: u16,
 
@@ -386,7 +375,7 @@ impl<W: Write> WriteDesc<&mut W> for ESDescriptor {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct DecoderConfigDescriptor {
     pub object_type_indication: u8,
     pub stream_type: u8,
@@ -482,7 +471,7 @@ impl<W: Write> WriteDesc<&mut W> for DecoderConfigDescriptor {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct DecoderSpecificDescriptor {
     pub profile: u8,
     pub freq_index: u8,
@@ -574,7 +563,7 @@ impl<W: Write> WriteDesc<&mut W> for DecoderSpecificDescriptor {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct SLConfigDescriptor {}
 
 impl SLConfigDescriptor {

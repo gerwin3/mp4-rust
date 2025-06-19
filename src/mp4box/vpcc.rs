@@ -1,8 +1,7 @@
-use crate::mp4box::*;
 use crate::Mp4Box;
-use serde::Serialize;
+use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct VpccBox {
     pub version: u8,
     pub flags: u32,
@@ -29,10 +28,6 @@ impl Mp4Box for VpccBox {
 
     fn box_size(&self) -> u64 {
         HEADER_SIZE + HEADER_EXT_SIZE + 8
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

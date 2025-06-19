@@ -1,4 +1,3 @@
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
@@ -7,23 +6,15 @@ use crate::mp4box::{
     stsz::StszBox, stts::SttsBox,
 };
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct StblBox {
     pub stsd: StsdBox,
     pub stts: SttsBox,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub ctts: Option<CttsBox>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub stss: Option<StssBox>,
     pub stsc: StscBox,
     pub stsz: StszBox,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub stco: Option<StcoBox>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub co64: Option<Co64Box>,
 }
 
@@ -61,10 +52,6 @@ impl Mp4Box for StblBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

@@ -1,11 +1,10 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
-use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
+use std::char::{REPLACEMENT_CHARACTER, decode_utf16};
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MdhdBox {
     pub version: u8,
     pub flags: u32,
@@ -55,10 +54,6 @@ impl Mp4Box for MdhdBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {
@@ -147,11 +142,9 @@ fn language_string(language: u16) -> String {
     lang[2] = ((language) & 0x1F) + 0x60;
 
     // Decode utf-16 encoded bytes into a string.
-    let lang_str = decode_utf16(lang.iter().cloned())
+    decode_utf16(lang.iter().cloned())
         .map(|r| r.unwrap_or(REPLACEMENT_CHARACTER))
-        .collect::<String>();
-
-    lang_str
+        .collect::<String>()
 }
 
 fn language_code(language: &str) -> u16 {

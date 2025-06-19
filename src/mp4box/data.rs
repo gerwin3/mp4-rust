@@ -3,11 +3,9 @@ use std::{
     io::{Read, Seek},
 };
 
-use serde::Serialize;
-
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct DataBox {
     pub data: Vec<u8>,
     pub data_type: DataType,
@@ -34,10 +32,6 @@ impl Mp4Box for DataBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

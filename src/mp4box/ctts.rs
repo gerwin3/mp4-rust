@@ -1,16 +1,13 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 use std::mem::size_of;
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CttsBox {
     pub version: u8,
     pub flags: u32,
-
-    #[serde(skip_serializing)]
     pub entries: Vec<CttsEntry>,
 }
 
@@ -24,7 +21,7 @@ impl CttsBox {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CttsEntry {
     pub sample_count: u32,
     pub sample_offset: i32,
@@ -37,10 +34,6 @@ impl Mp4Box for CttsBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {
@@ -58,7 +51,7 @@ impl<R: Read + Seek> ReadBox<&mut R> for CttsBox {
         let header_size = HEADER_SIZE + HEADER_EXT_SIZE;
         let entry_count = reader.read_u32::<BigEndian>()?;
         let entry_size = size_of::<u32>() + size_of::<i32>(); // sample_count + sample_offset
-                                                              // (sample_offset might be a u32, but the size is the same.)
+        // (sample_offset might be a u32, but the size is the same.)
         let other_size = size_of::<i32>(); // entry_count
         if u64::from(entry_count)
             > size

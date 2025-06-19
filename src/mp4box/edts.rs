@@ -1,10 +1,9 @@
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::elst::ElstBox;
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct EdtsBox {
     pub elst: Option<ElstBox>,
 }
@@ -34,10 +33,6 @@ impl Mp4Box for EdtsBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

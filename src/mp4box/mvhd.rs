@@ -1,10 +1,9 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MvhdBox {
     pub version: u8,
     pub flags: u32,
@@ -12,14 +11,9 @@ pub struct MvhdBox {
     pub modification_time: u64,
     pub timescale: u32,
     pub duration: u64,
-
-    #[serde(with = "value_u32")]
     pub rate: FixedPointU16,
-    #[serde(with = "value_u8")]
     pub volume: FixedPointU8,
-
     pub matrix: tkhd::Matrix,
-
     pub next_track_id: u32,
 }
 
@@ -64,10 +58,6 @@ impl Mp4Box for MvhdBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

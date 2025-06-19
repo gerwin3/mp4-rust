@@ -1,29 +1,18 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::vp09::Vp09Box;
 use crate::mp4box::*;
 use crate::mp4box::{avc1::Avc1Box, hev1::Hev1Box, mp4a::Mp4aBox, tx3g::Tx3gBox};
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct StsdBox {
     pub version: u8,
     pub flags: u32,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub avc1: Option<Avc1Box>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub hev1: Option<Hev1Box>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub vp09: Option<Vp09Box>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub mp4a: Option<Mp4aBox>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub tx3g: Option<Tx3gBox>,
 }
 
@@ -56,10 +45,6 @@ impl Mp4Box for StsdBox {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {

@@ -1,19 +1,14 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
-use serde::Serialize;
 use std::io::{Read, Seek, Write};
 
 use crate::mp4box::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Hev1Box {
     pub data_reference_index: u16,
     pub width: u16,
     pub height: u16,
-
-    #[serde(with = "value_u32")]
     pub horizresolution: FixedPointU16,
-
-    #[serde(with = "value_u32")]
     pub vertresolution: FixedPointU16,
     pub frame_count: u16,
     pub depth: u16,
@@ -65,10 +60,6 @@ impl Mp4Box for Hev1Box {
 
     fn box_size(&self) -> u64 {
         self.get_size()
-    }
-
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
     }
 
     fn summary(&self) -> Result<String> {
@@ -158,7 +149,7 @@ impl<W: Write> WriteBox<&mut W> for Hev1Box {
     }
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct HvcCBox {
     pub configuration_version: u8,
     pub general_profile_space: u8,
@@ -204,12 +195,9 @@ impl Mp4Box for HvcCBox {
                 .sum::<u64>()
     }
 
-    fn to_json(&self) -> Result<String> {
-        Ok(serde_json::to_string(&self).unwrap())
-    }
-
     fn summary(&self) -> Result<String> {
-        Ok(format!("configuration_version={} general_profile_space={} general_tier_flag={} general_profile_idc={} general_profile_compatibility_flags={} general_constraint_indicator_flag={} general_level_idc={} min_spatial_segmentation_idc={} parallelism_type={} chroma_format_idc={} bit_depth_luma_minus8={} bit_depth_chroma_minus8={} avg_frame_rate={} constant_frame_rate={} num_temporal_layers={} temporal_id_nested={} length_size_minus_one={}", 
+        Ok(format!(
+            "configuration_version={} general_profile_space={} general_tier_flag={} general_profile_idc={} general_profile_compatibility_flags={} general_constraint_indicator_flag={} general_level_idc={} min_spatial_segmentation_idc={} parallelism_type={} chroma_format_idc={} bit_depth_luma_minus8={} bit_depth_chroma_minus8={} avg_frame_rate={} constant_frame_rate={} num_temporal_layers={} temporal_id_nested={} length_size_minus_one={}",
             self.configuration_version,
             self.general_profile_space,
             self.general_tier_flag,
@@ -231,13 +219,13 @@ impl Mp4Box for HvcCBox {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct HvcCArrayNalu {
     pub size: u16,
     pub data: Vec<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct HvcCArray {
     pub completeness: bool,
     pub nal_unit_type: u8,
