@@ -4,7 +4,7 @@ use crate::mp4box::*;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct DinfBox {
-    dref: DrefBox,
+    pub dref: DrefBox,
 }
 
 impl DinfBox {
